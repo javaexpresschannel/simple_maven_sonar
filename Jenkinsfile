@@ -22,12 +22,17 @@ pipeline {
                 sh "mvn package"
             }
         }        
-        stage('Sonar') { 
+        stage('sonar') { 
             
             steps {
-                sh "mvn package"
+                sh '''
+               mvn sonar:sonar \
+                  -Dsonar.projectKey=test2 \
+                  -Dsonar.host.url=http://13.60.61.9:9000 \
+                  -Dsonar.login=fb1408bb389c6d0ef1321e6f6e810a5daa58c57b
+                '''
             }
-        }  
+        }
         stage('Archving') { 
             steps {
                  archiveArtifacts '**/target/*.jar'
