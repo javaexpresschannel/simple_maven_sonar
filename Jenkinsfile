@@ -28,6 +28,19 @@ pipeline {
                 sh "mvn package"
             }
         }  
+        stage('Docker Login'){
+            
+            steps {
+                  withCredentials([string(credentialsId: 'DockerId', variable: 'Dockerpwd')]) {
+                    sh "docker login -u javaexpress -p ${Dockerpwd}"
+                }
+                             
+        }
+        stage('Docker Push'){
+            steps {
+                sh 'docker push javaexpress/docker_jenkins_springboot:${BUILD_NUMBER}'
+            }
+        }
         stage('Archving') { 
             steps {
                  archiveArtifacts '**/target/*.jar'
