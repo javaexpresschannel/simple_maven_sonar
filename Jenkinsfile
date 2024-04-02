@@ -5,7 +5,7 @@ pipeline {
      
     }
     stages {
-		stage('Checkout') { 
+	stage('Checkout') { 
             steps {
                 git 'https://github.com/javaexpresschannel/simple_maven_sonar.git'
             }
@@ -33,20 +33,6 @@ pipeline {
                 '''
             }
         }  
-        stage('Docker Login'){
-            
-            steps {
-                  withCredentials([string(credentialsId: 'DockerId', variable: 'Dockerpwd')]) 
-                    sh "docker login -u javaexpress -p ${Dockerpwd}"
-                }
-                             
-        }
-        stage('Docker Push'){
-            steps {
-                sh 'docker push javaexpress/docker_jenkins_springboot:${BUILD_NUMBER}'
-            }
-
-        }
         stage('Archving') { 
             steps {
                  archiveArtifacts '**/target/*.jar'
